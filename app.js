@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
 
-// Konfigurasi Firebase milikmu (sesuai screenshot)
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDOJ5P8zm0G75YysaYCjCcXUbLfd2tQgW8",
   authDomain: "catatan--bulanan.firebaseapp.com",
@@ -37,7 +37,6 @@ document.getElementById('form-keuangan').addEventListener('submit', (e) => {
     };
 
     push(keuanganRef, data).then(() => {
-        // Pop-up sukses dengan SweetAlert2
         Swal.fire({
             title: "Mantap!",
             text: "Data Keuangan Berhasil Disimpan!",
@@ -73,7 +72,7 @@ onValue(keuanganRef, (snapshot) => {
             <td class="${kelasJenis}">${data.jenis}</td>
             <td>Rp ${parseInt(data.nominal).toLocaleString('id-ID')}</td>
         `;
-        tbody.prepend(row); // Prepend agar data terbaru di atas
+        tbody.prepend(row);
     });
 });
 
@@ -92,7 +91,6 @@ document.getElementById('form-barang').addEventListener('submit', (e) => {
     };
 
     push(barangRef, data).then(() => {
-        // Pop-up sukses dengan SweetAlert2
         Swal.fire({
             title: "Berhasil!",
             text: "Data Barang Berhasil Disimpan!",
