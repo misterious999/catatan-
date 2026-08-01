@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
 
-// GANTI DENGAN KONFIGURASI FIREBASE ANDA
+// Konfigurasi Firebase milikmu (sesuai screenshot)
 const firebaseConfig = {
   apiKey: "AIzaSyDOJ5P8zm0G75YysaYCjCcXUbLfd2tQgW8",
   authDomain: "catatan--bulanan.firebaseapp.com",
@@ -37,9 +37,23 @@ document.getElementById('form-keuangan').addEventListener('submit', (e) => {
     };
 
     push(keuanganRef, data).then(() => {
-        alert("Data Keuangan Berhasil Disimpan!");
+        // Pop-up sukses dengan SweetAlert2
+        Swal.fire({
+            title: "Mantap!",
+            text: "Data Keuangan Berhasil Disimpan!",
+            icon: "success",
+            confirmButtonColor: "#3498db",
+            confirmButtonText: "Oke, Lanjut!"
+        });
         document.getElementById('form-keuangan').reset();
-    }).catch((error) => console.error("Error:", error));
+    }).catch((error) => {
+        Swal.fire({
+            title: "Waduh!",
+            text: "Gagal menyimpan data keuangan.",
+            icon: "error"
+        });
+        console.error("Error:", error);
+    });
 });
 
 // Menampilkan Data Keuangan (Realtime)
@@ -78,9 +92,23 @@ document.getElementById('form-barang').addEventListener('submit', (e) => {
     };
 
     push(barangRef, data).then(() => {
-        alert("Data Barang Berhasil Disimpan!");
+        // Pop-up sukses dengan SweetAlert2
+        Swal.fire({
+            title: "Berhasil!",
+            text: "Data Barang Berhasil Disimpan!",
+            icon: "success",
+            confirmButtonColor: "#27ae60",
+            confirmButtonText: "Sip!"
+        });
         document.getElementById('form-barang').reset();
-    }).catch((error) => console.error("Error:", error));
+    }).catch((error) => {
+        Swal.fire({
+            title: "Waduh!",
+            text: "Gagal menyimpan data barang.",
+            icon: "error"
+        });
+        console.error("Error:", error);
+    });
 });
 
 // Menampilkan Data Barang (Realtime)
