@@ -6,47 +6,49 @@
 }
 
 body {
-    background-color: #f4f7f6;
-    color: #333;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #e0e0e0;
+    min-height: 100vh;
     padding: 20px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 900px; /* Dipersempit karena sisa 1 tabel */
     margin: 0 auto;
 }
 
 header {
     text-align: center;
     margin-bottom: 30px;
+    padding-top: 20px;
 }
 
 header h1 {
-    color: #2c3e50;
+    color: #ffffff;
     font-size: 2.5rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 header p {
-    color: #7f8c8d;
+    color: #b0bec5;
+    margin-bottom: 15px;
 }
 
-.grid-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* Efek Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 25px;
 }
 
 .card h2 {
     margin-bottom: 20px;
-    color: #34495e;
-    border-bottom: 2px solid #ecf0f1;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
 }
 
@@ -59,41 +61,89 @@ label {
     margin-bottom: 5px;
     font-weight: 600;
     font-size: 0.9rem;
+    color: #cfd8dc;
 }
 
 input, select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
     outline: none;
-    transition: border-color 0.3s;
+    transition: all 0.3s;
+}
+
+/* Background untuk dropdown menu agar teksnya tidak tembus pandang */
+select option {
+    background: #203a43;
+    color: #fff;
+}
+
+input::placeholder {
+    color: #90a4ae;
 }
 
 input:focus, select:focus {
-    border-color: #3498db;
+    border-color: #4fc3f7;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .btn {
-    width: 100%;
-    background-color: #3498db;
-    color: #fff;
-    padding: 12px;
+    display: inline-block;
+    padding: 12px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    transition: background 0.3s;
-    margin-bottom: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    text-decoration: none;
+    width: 100%;
 }
 
-.btn:hover {
-    background-color: #2980b9;
+.btn-primary {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #4fc3f7;
+    color: #4fc3f7;
+    width: auto;
+}
+
+.btn-outline:hover {
+    background: rgba(79, 195, 247, 0.1);
+}
+
+.btn-hapus {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid #e74c3c;
+    color: #ff5252;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.8rem;
+}
+
+.btn-hapus:hover {
+    background: #e74c3c;
+    color: #fff;
 }
 
 .table-container {
     overflow-x: auto;
     max-height: 400px;
+    border-radius: 8px;
 }
 
 table {
@@ -102,23 +152,24 @@ table {
 }
 
 th, td {
-    padding: 12px;
+    padding: 15px;
     text-align: left;
-    border-bottom: 1px solid #ecf0f1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 th {
-    background-color: #f8f9fa;
+    background: rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
+    color: #fff;
 }
 
 .badge-masuk {
-    color: #27ae60;
+    color: #69f0ae; /* Hijau neon */
     font-weight: bold;
 }
 
 .badge-keluar {
-    color: #e74c3c;
+    color: #ff5252; /* Merah cerah */
     font-weight: bold;
 }

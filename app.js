@@ -1,8 +1,7 @@
-// Import Firebase SDK (V9 Modular)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+// Tambahkan 'remove' di impor di bawah ini
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
 
-// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDOJ5P8zm0G75YysaYCjCcXUbLfd2tQgW8",
   authDomain: "catatan--bulanan.firebaseapp.com",
@@ -14,17 +13,11 @@ const firebaseConfig = {
   measurementId: "G-CG0XZ01WJ2"
 };
 
-// Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-
-// Referensi Database
 const keuanganRef = ref(db, 'keuangan');
-const barangRef = ref(db, 'barang');
 
-// ==========================================
-// LOGIKA PENCATATAN KEUANGAN
-// ==========================================
+// 1. TAMBAH DATA
 document.getElementById('form-keuangan').addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -38,29 +31,27 @@ document.getElementById('form-keuangan').addEventListener('submit', (e) => {
 
     push(keuanganRef, data).then(() => {
         Swal.fire({
-            title: "Mantap!",
-            text: "Data Keuangan Berhasil Disimpan!",
+            title: "Tersimpan!",
+            text: "Data Keuangan berhasil dicatat.",
             icon: "success",
-            confirmButtonColor: "#3498db",
-            confirmButtonText: "Oke, Lanjut!"
+            background: '#1e272e',
+            color: '#fff',
+            confirmButtonColor: "#3498db"
         });
         document.getElementById('form-keuangan').reset();
     }).catch((error) => {
-        Swal.fire({
-            title: "Waduh!",
-            text: "Gagal menyimpan data keuangan.",
-            icon: "error"
-        });
+        Swal.fire("Error!", "Gagal menyimpan data.", "error");
         console.error("Error:", error);
     });
 });
 
-// Menampilkan Data Keuangan (Realtime)
+// 2. BACA & TAMPILKAN DATA
 onValue(keuanganRef, (snapshot) => {
     const tbody = document.querySelector('#tabel-keuangan tbody');
     tbody.innerHTML = ''; 
     
     snapshot.forEach((childSnapshot) => {
+        const key = childSnapshot.key; // Kunci unik dari Firebase
         const data = childSnapshot.val();
         const row = document.createElement('tr');
         
@@ -71,61 +62,40 @@ onValue(keuanganRef, (snapshot) => {
             <td>${data.keterangan}</td>
             <td class="${kelasJenis}">${data.jenis}</td>
             <td>Rp ${parseInt(data.nominal).toLocaleString('id-ID')}</td>
+            <td><button class="btn-hapus" data-key="${key}">Hapus</button></td>
         `;
         tbody.prepend(row);
     });
 });
 
-// ==========================================
-// LOGIKA PENCATATAN BARANG
-// ==========================================
-document.getElementById('form-barang').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const data = {
-        tanggal: document.getElementById('tgl-barang').value,
-        jenis: document.getElementById('jenis-barang').value,
-        nama: document.getElementById('nama-barang').value,
-        qty: document.getElementById('qty-barang').value,
-        timestamp: Date.now()
-    };
-
-    push(barangRef, data).then(() => {
-        Swal.fire({
-            title: "Berhasil!",
-            text: "Data Barang Berhasil Disimpan!",
-            icon: "success",
-            confirmButtonColor: "#27ae60",
-            confirmButtonText: "Sip!"
-        });
-        document.getElementById('form-barang').reset();
-    }).catch((error) => {
-        Swal.fire({
-            title: "Waduh!",
-            text: "Gagal menyimpan data barang.",
-            icon: "error"
-        });
-        console.error("Error:", error);
-    });
-});
-
-// Menampilkan Data Barang (Realtime)
-onValue(barangRef, (snapshot) => {
-    const tbody = document.querySelector('#tabel-barang tbody');
-    tbody.innerHTML = ''; 
-    
-    snapshot.forEach((childSnapshot) => {
-        const data = childSnapshot.val();
-        const row = document.createElement('tr');
+// 3. HAPUS DATA
+document.querySelector('#tabel-keuangan tbody').addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-hapus')) {
+        const key = e.target.getAttribute('data-key');
         
-        const kelasJenis = data.jenis === 'Masuk' ? 'badge-masuk' : 'badge-keluar';
-        
-        row.innerHTML = `
-            <td>${data.tanggal}</td>
-            <td>${data.nama}</td>
-            <td class="${kelasJenis}">${data.jenis}</td>
-            <td>${data.qty}</td>
-        `;
-        tbody.prepend(row);
-    });
+        Swal.fire({
+            title: 'Hapus Data?',
+            text: "Data ini tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            background: '#1e272e',
+            color: '#fff',
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#7f8c8d',
+            confirmButtonText: 'Ya, Hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const itemRef = ref(db, 'keuangan/' + key);
+                remove(itemRef).then(() => {
+                    Swal.fire({
+                        title: 'Terhapus!',
+                        text: 'Data berhasil dihapus.',
+                        icon: 'success',
+                        background: '#1e272e',
+                        color: '#fff'
+                    });
+                });
+            }
+        });
+    }
 });
